@@ -36,21 +36,17 @@
     .btn.primary{background:linear-gradient(90deg,var(--accent1),#ff9a9e);color:#111}
     .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.95)}
     .btn:active{transform:translateY(2px)}
-    .note{margin-top:14px;text-align:center;opacity:0.95;font-size:14px}
     .stars{position:absolute;inset:0;pointer-events:none}
     .bubble{position:absolute;border-radius:999px;opacity:0.08;filter:blur(14px);pointer-events:none}
 
     /* FINAL SCREEN STYLES (fixed contrast + lively but simple) */
     #final{display:none;min-height:100vh;align-items:center;justify-content:center;padding:28px;background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.45));}
-    .finalCard{max-width:900px;margin:0 auto;padding:28px;border-radius:20px;background:linear-gradient(180deg, rgba(0,0,0,0.72), rgba(10,10,10,0.6));box-shadow:0 20px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.04);text-align:center}
+    .finalCard{max-width:900px;margin:0 auto;padding:28px;border-radius:20px;background:linear-gradient(180deg, rgba(0,0,0,0.78), rgba(10,10,10,0.65));box-shadow:0 20px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.04);text-align:center}
     .finalTitle{font-family:'Playfair Display', serif;font-size:clamp(28px,8vw,56px);font-weight:800;line-height:1.02;color:#fff;text-shadow:0 10px 30px rgba(0,0,0,0.7)}
-    .finalSubtitle{margin-top:12px;font-size:20px;color:rgba(255,255,255,0.95)}
-
-    /* subtle confetti pieces (CSS-based) */
+    .finalSubtitle{margin-top:12px;font-size:20px;color:rgba(255,255,255,0.98)}
     .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
     .confetti-piece{position:absolute;width:10px;height:14px;border-radius:2px;opacity:0.95;transform-origin:center;will-change:transform,top;animation:fall 2200ms linear forwards}
     @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg) scale(1)}50%{transform:translateY(30vh) rotate(180deg) scale(1.05)}100%{transform:translateY(110vh) rotate(360deg) scale(.9)} }
-
     @media(max-width:560px){:root{--card-contrast: rgba(0,0,0,0.62)}.card{padding:20px;border-radius:16px}.quote{font-size:18px}.timebox{min-width:72px;padding:10px}.actions{gap:10px}.btn{padding:12px 16px;font-size:16px}}
     @media (prefers-contrast: more){:root{--card-contrast: rgba(0,0,0,0.75)}.title h1{filter:brightness(1.05)}}
   </style>
@@ -69,8 +65,8 @@
       <p class="subtitle quote" id="quoteText"> </p>
 
       <div class="info" aria-hidden="false">
-        <div class="panel"><h3>Күні</h3><p id="date">5 қазан 2025</p></div>
-        <div class="panel"><h3>Уақыты & Орыны</h3><p id="time">15:00 — Акт залы</p></div>
+        <div class="panel"><h3>Күні</h3><p id="date">3 қазан 2025</p></div>
+        <div class="panel"><h3>Уақыты & Орыны</h3><p id="time">12:00 — Акт залы</p></div>
       </div>
 
       <div class="countdown" aria-live="polite">
@@ -85,7 +81,6 @@
         <button id="shareBtn" class="btn ghost" title="Сілтеме бөлісу">Сілтемені көшіру</button>
       </div>
 
-      <p class="note">Концерттік бағдарлама білім алушылар дайындаған. Кіріс — тегін. Сұрақтар болса, ұйымдастырушыларға хабарласыңыз.</p>
     </div>
 
     <div class="bubble" style="width:220px;height:220px;right:-40px;top:30px;background:linear-gradient(90deg, rgba(255,78,207,0.18), rgba(255,213,74,0.06));"></div>
@@ -107,7 +102,8 @@
     function type() { if (i <= quoteText.length) { quoteEl.textContent = quoteText.slice(0, i); i++; setTimeout(type, 28); } else { quoteEl.classList.remove('typewriter'); } }
     setTimeout(()=>{ quoteEl.classList.add('typewriter'); type(); }, 600);
 
-    const eventISO = '2025-10-05T15:00:00+06:00';
+    // Updated countdown target: 3 October 2025 at 12:00 (Asia/Almaty +06:00)
+    const eventISO = '2025-10-03T12:00:00+06:00';
     const eventTime = new Date(eventISO).getTime();
     const els = {d:document.getElementById('d'), h:document.getElementById('h'), m:document.getElementById('m'), s:document.getElementById('s')};
     function updateCountdown(){ const now = Date.now(); let diff = Math.max(0, eventTime - now); const days = Math.floor(diff / (1000*60*60*24)); diff -= days*(1000*60*60*24); const hours = Math.floor(diff / (1000*60*60)); diff -= hours*(1000*60*60); const mins = Math.floor(diff / (1000*60)); diff -= mins*(1000*60); const secs = Math.floor(diff/1000); els.d.textContent = String(days).padStart(2,'0'); els.h.textContent = String(hours).padStart(2,'0'); els.m.textContent = String(mins).padStart(2,'0'); els.s.textContent = String(secs).padStart(2,'0'); }
@@ -115,13 +111,11 @@
 
     document.getElementById('shareBtn').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText(location.href); alert('Сілтеме көшірілді — жіберіңіз.'); } catch(e){ prompt('Сілтемені көшіріп алыңыз:', location.href); } });
 
-    // Show final with strong contrast + confetti pieces
     document.getElementById('moreBtn').addEventListener('click', ()=>{
       document.querySelector('.scene').style.display = 'none';
       document.getElementById('final').style.display = 'flex';
       window.scrollTo({top:0,behavior:'smooth'});
-      // spawn small confetti pieces for 2.5s
-      spawnConfetti(30);
+      spawnConfetti(28);
     });
 
     function spawnConfetti(count){
@@ -137,7 +131,6 @@
         z.style.animationDelay = (Math.random()*800)+'ms'; z.style.transform = 'rotate('+(Math.random()*360)+'deg)';
         container.appendChild(z);
       }
-      // cleanup after animation
       setTimeout(()=>{ while(container.firstChild) container.removeChild(container.firstChild); }, 3500);
     }
 
@@ -147,4 +140,3 @@
   </script>
 </body>
 </html>
-
