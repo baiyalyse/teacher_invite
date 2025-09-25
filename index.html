@@ -103,7 +103,7 @@
     setTimeout(()=>{ quoteEl.classList.add('typewriter'); type(); }, 600);
 
     // Updated countdown target: 3 October 2025 at 12:00 (Asia/Almaty +06:00)
-    const eventISO = '2025-10-03T12:00:00+06:00';
+    const eventISO = '2025-10-03T12:00:00+05:00';
     const eventTime = new Date(eventISO).getTime();
     const els = {d:document.getElementById('d'), h:document.getElementById('h'), m:document.getElementById('m'), s:document.getElementById('s')};
     function updateCountdown(){ const now = Date.now(); let diff = Math.max(0, eventTime - now); const days = Math.floor(diff / (1000*60*60*24)); diff -= days*(1000*60*60*24); const hours = Math.floor(diff / (1000*60*60)); diff -= hours*(1000*60*60); const mins = Math.floor(diff / (1000*60)); diff -= mins*(1000*60); const secs = Math.floor(diff/1000); els.d.textContent = String(days).padStart(2,'0'); els.h.textContent = String(hours).padStart(2,'0'); els.m.textContent = String(mins).padStart(2,'0'); els.s.textContent = String(secs).padStart(2,'0'); }
@@ -140,3 +140,4 @@
   </script>
 </body>
 </html>
+
